@@ -198,12 +198,6 @@ dataset_year = combined_dataset.copy()
 dataset_year = dataset_year.groupby(['Year']).sum()
 dataset_year = dataset_year.reset_index()
 dataset_year = dataset_year.drop(['Area'], axis=1)
-dataset_year = dataset_year.drop(['Element_x'], axis=1)
-dataset_year = dataset_year.drop(['Element_y'], axis=1)
-dataset_year = dataset_year.drop(['Element'], axis=1)
-dataset_year = dataset_year.drop(['Unit_x'], axis=1)
-dataset_year = dataset_year.drop(['Unit_y'], axis=1)
-dataset_year = dataset_year.drop(['Unit'], axis=1)
 
 st.dataframe(dataset_year, width=2000)
 
@@ -1190,54 +1184,71 @@ st.latex(r'''
 x_{scaled} = \frac{x - x_{min}}{x_{max} - x_{min}}
 \end{equation}
 ''')
-st.markdown("## 9.2 Linear Regression")
+st.markdown("x = fitur, x min = nilai minimum fitur, x max = nilai maksimum fitur")
+st.markdown("## 9.2 Inverse MinMaxScaler")
+st.latex(r'''
+\begin{equation}
+x_{unscaled} = x_{scaled} * (x_{max} - x_{min}) + x_{min}
+\end{equation}
+''')
+st.markdown("x = fitur, x min = nilai minimum fitur, x max = nilai maksimum fitur")
+st.markdown("## 9.3 Linear Regression")
 st.latex(r'''
 \begin{equation}
 \hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... + \beta_n x_n
 \end{equation}
 ''')
+st.markdown("y hat = y prediksi, x = fitur, beta = koefisien, n = jumlah fitur")
 st.latex(r'''
 \begin{equation}
 \beta_1 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sum_{i=1}^{n} (x_i - \bar{x})^2}
 \end{equation}
 ''')
-st.markdown("## 9.3 ARIMA")
+st.markdown("x = fitur, y = target, n = jumlah fitur")
+st.markdown("## 9.4 ARIMA")
 st.latex(r'''
 \begin{equation}
 ARIMA(p,d,q) = AR(p) + I(d) + MA(q)
 \end{equation}
 ''')
+st.markdown("p = order AR, d = order I, q = order MA")
 st.latex(r'''
 \begin{equation}
 AR(p) = \phi_1 y_{t-1} + \phi_2 y_{t-2} + ... + \phi_p y_{t-p}
 \end{equation}
 ''')
+st.markdown("y = target, t = waktu, phi = koefisien")
 st.latex(r'''
 \begin{equation}
 I(d) = y_t - y_{t-d}
 \end{equation}
 ''')
+st.markdown("y = target, t = waktu, d = order I")
 st.latex(r'''
 \begin{equation}
 MA(q) = \theta_1 \epsilon_{t-1} + \theta_2 \epsilon_{t-2} + ... + \theta_q \epsilon_{t-q}
 \end{equation}
 ''')
+st.markdown("epsilon = error, t = waktu, q = order MA")
 st.latex(r'''
 \begin{equation}
 \epsilon_t = y_t - \hat{y_t}
 \end{equation}
 ''')
+st.markdown("y = target, t = waktu, y hat = y prediksi")
 st.latex(r'''
 \begin{equation}
 \hat{y_t} = \mu + \phi_1 y_{t-1} + \phi_2 y_{t-2} + ... + \phi_p y_{t-p} + \theta_1 \epsilon_{t-1} + \theta_2 \epsilon_{t-2} + ... + \theta_q \epsilon_{t-q}
 \end{equation}
 ''')
-st.markdown("## 9.4 Voting Classifier")
+st.markdown("y hat = y prediksi, mu = rata-rata, phi = koefisien AR, epsilon = error, theta = koefisien MA, t = waktu")
+st.markdown("## 9.5 Voting Classifier")
 st.latex(r'''
 \begin{equation}
 \hat{y} = mode(y_1, y_2, ..., y_n)
 \end{equation}
 ''')
+st.markdown("y hat = y prediksi, y = target, n = jumlah model")
 st.latex(r'''
 \begin{equation}
 mode = \begin{cases}
@@ -1246,24 +1257,28 @@ y_{LR} & \text{jika } |y_{ARIMA} - y_{actual}| > |y_{LR} - y_{actual}| \\
 \end{cases}
 \end{equation}
 ''')
-st.markdown("## 9.5 MSE")
+st.markdown("y hat = y prediksi, y = target, ARIMA = model ARIMA, LR = model Linear Regression")
+st.markdown("## 9.6 MSE")
 st.latex(r'''
 \begin{equation}
 MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y_i})^2
 \end{equation}
 ''')
-st.markdown("## 9.6 RMSE")
+st.markdown("MSE = Mean Squared Error, y = target, y hat = y prediksi, n = jumlah data")
+st.markdown("## 9.7 RMSE")
 st.latex(r'''
 \begin{equation}
 RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y_i})^2}
 \end{equation}
 ''')
-st.markdown("## 9.7 R2")
+st.markdown("RMSE = Root Mean Squared Error, y = target, y hat = y prediksi, n = jumlah data")
+st.markdown("## 9.8 R2")
 st.latex(r'''
 \begin{equation}
 R^2 = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y_i})^2}{\sum_{i=1}^{n} (y_i - \bar{y_i})^2}
 \end{equation}
 ''')
+st.markdown("R2 = Coefficient of Determination, y = target, y hat = y prediksi, n = jumlah data, y bar = rata-rata y")
 
 
 
