@@ -198,6 +198,13 @@ dataset_year = combined_dataset.copy()
 dataset_year = dataset_year.groupby(['Year']).sum()
 dataset_year = dataset_year.reset_index()
 dataset_year = dataset_year.drop(['Area'], axis=1)
+dataset_year = dataset_year.drop(['Element_x'], axis=1)
+dataset_year = dataset_year.drop(['Element_y'], axis=1)
+dataset_year = dataset_year.drop(['Element'], axis=1)
+dataset_year = dataset_year.drop(['Unit_x'], axis=1)
+dataset_year = dataset_year.drop(['Unit_y'], axis=1)
+dataset_year = dataset_year.drop(['Unit'], axis=1)
+
 st.dataframe(dataset_year, width=2000)
 
 st.markdown("### 4.3.2. Setelah Normalisasi")
