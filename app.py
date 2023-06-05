@@ -37,6 +37,8 @@ st.title("Prediction and Analysis of Rice Production and Yields in the World Usi
 
 st.header("1. Dataset Information")
 dataset_original = pd.read_csv('dataset.csv')
+# save to file xls
+# dataset_original.to_excel('dataset_original.xlsx', index=False)
 st.write(dataset_original)
 
 feature_list = dataset_original.columns.tolist()
@@ -53,11 +55,15 @@ st.markdown("# 2. Data Preprocessing Awal")
 # remove feature
 st.markdown("## 1. Menghapus Kolom yang Tidak Digunakan")
 dataset_after_remove = dataset_original.drop(['Domain Code', 'Domain','Area Code (M49)','Element Code', 'Item Code (CPC)', 'Item', 'Year Code', 'Flag', 'Flag Description'], axis=1)
+# dataset_after_remove.to_excel('dataset_after_remove.xlsx', index=False)
 st.dataframe(dataset_after_remove, width=2000)
 st.markdown("## 2. Split Dataset Berdasarkan Element")
 dataset_area_harvested = dataset_after_remove[dataset_after_remove['Element'] == 'Area harvested']
 dataset_yield = dataset_after_remove[dataset_after_remove['Element'] == 'Yield']
 dataset_production = dataset_after_remove[dataset_after_remove['Element'] == 'Production']
+# dataset_area_harvested.to_excel('dataset_area_harvested.xlsx', index=False)
+# dataset_yield.to_excel('dataset_yield.xlsx', index=False)
+# dataset_production.to_excel('dataset_production.xlsx', index=False)
 st.markdown("### 2.1. Dataset Area Harvested")
 st.dataframe(dataset_area_harvested, width=2000)
 st.write("Dataset Area Harvested memiliki {} baris dan {} kolom".format(dataset_area_harvested.shape[0], dataset_area_harvested.shape[1]))
@@ -94,7 +100,7 @@ for i in dataset_after_remove.columns:
     
 st.markdown("## 3. Visualisasi Data")
 st.markdown("### 3.1. Area Harvested")
-st.markdown("#### 3.1.1. Visualisasi Data Area Harvested Berdasarkan Tahu")
+st.markdown("#### 3.1.1. Visualisasi Data Area Harvested Berdasarkan Tahun (ha)")
 fig = px.line(dataset_area_harvested, x="Year", y="Value", color='Area', title='Area Harvested (Line Chart)')
 st.plotly_chart(fig)
 st.markdown("#### 3.1.2. Visualisasi Data Map Area Harvested")
@@ -200,6 +206,27 @@ dataset_year = dataset_year.reset_index()
 dataset_year = dataset_year.drop(['Area'], axis=1)
 
 st.dataframe(dataset_year, width=2000)
+
+# make auto corelation in dataset_year
+corrlation_year_area_harvested = dataset_year['Value Area Harvested (ha)'].corr(dataset_year['Year'])
+corrlation_year_yield = dataset_year['Value Yield (hg/ha)'].corr(dataset_year['Year'])
+corrlation_year_production = dataset_year['Value Production (ton)'].corr(dataset_year['Year'])
+# dataset_year.to_excel('dataset_year.xlsx', index=False)
+
+st.markdown("#### 4.3.1.1 Korelasi Area Harvested dan Year")
+st.write("Korelasi Area Harvested dan Year adalah {}".format(corrlation_year_area_harvested))
+fig = px.scatter(dataset_year, x="Year", y="Value Area Harvested (ha)", title='Korelasi Area Harvested dan Year')
+st.plotly_chart(fig)
+st.markdown("#### 4.3.1.2 Korelasi Yield dan Year")
+st.write("Korelasi Yield dan Year adalah {}".format(corrlation_year_yield))
+fig = px.scatter(dataset_year, x="Year", y="Value Yield (hg/ha)", title='Korelasi Yield dan Year')
+st.plotly_chart(fig)
+st.markdown("#### 4.3.1.3 Korelasi Production dan Year")
+st.write("Korelasi Production dan Year adalah {}".format(corrlation_year_production))
+fig = px.scatter(dataset_year, x="Year", y="Value Production (ton)", title='Korelasi Production dan Year')
+st.plotly_chart(fig)
+hasil_korelasi = "Setelah kita melakukan sum berdasarkan tahun, kita dapat melihat bahwa korelasi (linear) antara Year dan variabel lainnya (Area Harvested {}, Yield {}, Production {}) sangat tinggi. Ini berarti bahwa kita dapat menggunakan Year sebagai prediktor untuk variabel lainnya. dan kita dapat menggunakan variabel lainnya untuk memprediksi Year. Alasan menggunakan Koeefisien Korelasi Pearson adalah karena kita ingin melihat hubungan linear antara variabel Year dan variabel lainnya.".format(corrlation_year_area_harvested, corrlation_year_yield, corrlation_year_production)
+st.write(hasil_korelasi)
 
 st.markdown("### 4.3.2. Setelah Normalisasi")
 scaler_value_area_year = MinMaxScaler()
